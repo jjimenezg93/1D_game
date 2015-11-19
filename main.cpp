@@ -1,13 +1,6 @@
 /*
-** Author: Julián Jiménez González (jjimenezg93)
+** Author: Julian Jimenez Gonzalez (jjimenezg93)
 */
-
-#define WORLDSIZE 41
-#define MOVELEFT 65
-#define MOVERIGHT 68
-#define SHOOTLEFT 81
-#define SHOOTRIGHT 69
-#define SCROLL 14
 
 #pragma warning(disable: 4668)
 #pragma warning(disable: 4710)
@@ -15,127 +8,96 @@
 
 #include <conio.h>
 #include <cstdio>
-#include <cstdlib>
 #include <Windows.h>
 
+#include "defs.h"
+#include "Renderer.h"
+#include "GameLogic.h"
+
+char flagLoop = '\0';
+
+unsigned short int posPlayer = WORLDSIZE / 2;
+
+short int posEnemy = -1;
+short int dirEnemy = -1;
+
+short int posLBullet = posEnemy -(COLLISIONTHRESHOLD + 1);		//must avoid having posEnemy = -1 and posLBullet = -2, since it would instantly kill enemy with COLLISIONTHRESHOLD >= 1
+short int posRBullet = WORLDSIZE + 2;
+
+short int lifesPlayer = 3;
+short int pointsPlayer = 0;
+
+short int posExtraPoint = -1;
+
+unsigned char rainFrames[3] = { '`', '-', '.' };
+bool intenseRain = false;		//change for fun
+
 int main() {
-	char flag = '\0';
 	unsigned short int key = 0;
 
-	unsigned short int playerPos = WORLDSIZE / 2;
+	Renderer::setMapPosition();
 
-	short int enemyPos = 0;
-	short int enemyDir = -1;
-
-	short int posLBullet = -2;		//if set to -1, on enemy spawn: posLBullet = -1, enemyPos = 0 -> instantly kills enemy when it spawns on the left
-	short int posRBullet = WORLDSIZE + 1;
-
-	short int playerLifes = 3;
-	short int playerPoints = 0;
-
-	short int extraPointPos = -1;
-
-	for (unsigned short int i = 0; i < SCROLL; i++)
-		printf("\n");
-
-	while (!flag) {
-		for (unsigned short int i = 0; i < WORLDSIZE - 1; i++) {
-			if (i == posLBullet)
-				printf("<");
-			else if (i == posRBullet)
-				printf(">");
-			else if (i == playerPos)
-				printf("X");
-			else if (i == enemyPos)
-				printf("|");
-			else if (i == extraPointPos)
-				printf("V");
-			else
-				printf("-");
-		}
+	while (!flagLoop) {
+		Renderer::renderWorld();
 
 		//input management
 		if (_kbhit()) {
 			key = static_cast<unsigned short int>(toupper(_getch()));
 
-			if (key == MOVELEFT && playerPos > 0)
-				playerPos--;
-			else if (key == MOVERIGHT && playerPos < WORLDSIZE - 1)
-				playerPos++;
-			else if (key == SHOOTLEFT && posLBullet <= -1 && !(posRBullet <= WORLDSIZE))
-				posLBullet = playerPos - 1;
-			else if (key == SHOOTRIGHT && posRBullet >= WORLDSIZE + 1 && !(posLBullet >= 0))
-				posRBullet = playerPos + 1;
-			else if (key == 27)
-				flag = '1';
+			if (key == MOVELEFT && posPlayer > 0)
+				GameLogic::updatePlayerPosition(1, -1);
+			else if (key == MOVERIGHT && posPlayer < WORLDSIZE - 1)
+				GameLogic::updatePlayerPosition(1, 1);
+			else if (key == SHOOTLEFT && posLBullet <= -(1 + COLLISIONTHRESHOLD) && !(posRBullet <= WORLDSIZE))
+				GameLogic::setBulletPosition(&posLBullet, posPlayer - 1);
+			else if (key == SHOOTRIGHT && posRBullet >= WORLDSIZE + 2 && !(posLBullet >= 0))
+				GameLogic::setBulletPosition(&posRBullet, posPlayer + 1);
+			else if (key == ESC)
+				flagLoop = '1';
 		}
 
-		//enemy random spawn. One at a time
-		if (enemyPos < 0 || enemyPos > WORLDSIZE) {
-			if (rand() % 2) {
-				enemyPos = 0;
-				enemyDir = 1;
-			} else {
-				enemyPos = WORLDSIZE;
-				enemyDir = -1;
-			}
-		}
-
-		if (!(rand() % 100))
-			extraPointPos = rand() % WORLDSIZE;
+		//random spawn enemy & extraPoint. One at a time each
+		GameLogic::randomSpawnEnemy();
+		GameLogic::randomSpawnExtraPoint();
 
 		//enemy - bullets collisions
-		if (abs(enemyPos - posLBullet) <= 1) {
-			playerPoints += 5;
-			posLBullet = -1;
-			enemyPos = -1;
+		if (GameLogic::isCollision(posEnemy, posLBullet)) {
+			GameLogic::addPoints(5);
+			GameLogic::setBulletPosition(&posLBullet, -(1 + COLLISIONTHRESHOLD + 1));
+			GameLogic::setEnemyPosition(-1);
 		}
 
-		if (abs(enemyPos - posRBullet) <= 1) {
-			playerPoints += 5;
-			posRBullet = WORLDSIZE + 1;
-			enemyPos = -1;
+		if (GameLogic::isCollision(posEnemy, posRBullet)) {
+			GameLogic::addPoints(5);
+			GameLogic::setBulletPosition(&posRBullet, WORLDSIZE + 1);
+			GameLogic::setEnemyPosition(-1);
 		}
 
 		//enemy & bullets position update
-		if (enemyPos >= 0 && enemyPos <= WORLDSIZE)
-			enemyPos += enemyDir;
+		GameLogic::updateEnemyPosition(SPEED);
+		GameLogic::updateBulletsPosition(SPEED);
 
-		if (posLBullet >= -1)
-			posLBullet--;
+		//extraPoint collisions - enemy & player
+		if (GameLogic::isCollision(posEnemy, posExtraPoint))
+			GameLogic::setExtraPointPosition(-(1 + COLLISIONTHRESHOLD + 1));
 
-		if (posRBullet <= WORLDSIZE + 1)
-			posRBullet++;
-
-		//extraPoint collisions
-		if (abs(enemyPos - extraPointPos) <= 1)
-			extraPointPos = -1;
-
-		if (abs(playerPos - extraPointPos) <= 1) {
-			extraPointPos = -1;
-			playerPoints += 100;
+		if (GameLogic::isCollision(posPlayer, posExtraPoint)) {
+			GameLogic::setExtraPointPosition(-(1 + COLLISIONTHRESHOLD + 1));
+			GameLogic::addPoints(100);
 		}
 
 		//enemy - player collision
-		if (abs(enemyPos - playerPos) <= 1) {
-			if (playerLifes == 0) {
-				printf("\r");
-
-				for (unsigned short int i = 0; i < WORLDSIZE / 2; i++)
-					printf("\\/");
-
+		if (GameLogic::isCollision(posPlayer, posEnemy)) {
+			if (lifesPlayer == 0) {
+				Renderer::renderGameOver();
 				break;
 			} else {
-				playerLifes--;
-				enemyPos = -1;
+				lifesPlayer--;
+				GameLogic::setEnemyPosition(-1);
 			}
 		}
 
-		printf(" Points = %d/Lifes = %d", playerPoints, playerLifes);
-
 		Sleep(50);
-
-		printf("\r");
 	}
 
 	getchar();
