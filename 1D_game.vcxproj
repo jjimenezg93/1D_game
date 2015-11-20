@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameLogic.cpp" />
+    <ClCompile Include="HighScores.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Metheorology.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="defs.h" />
     <ClInclude Include="GameLogic.h" />
+    <ClInclude Include="HighScores.h" />
     <ClInclude Include="Metheorology.h" />
     <ClInclude Include="Renderer.h" />
   </ItemGroup>

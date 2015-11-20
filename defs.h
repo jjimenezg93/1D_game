@@ -14,8 +14,11 @@
 #define SCROLL 14
 #define SPEED 1
 #define COLLISIONTHRESHOLD 1
+#define NAMESIZE 15
+#define HIGHSCORESIZE 3
 
-extern char flagLoop;
+extern char flagApp;
+extern char flagGame;
 
 extern unsigned short int posPlayer;
 
@@ -26,7 +29,7 @@ extern short int posLBullet;
 extern short int posRBullet;
 
 extern short int lifesPlayer;
-extern short int pointsPlayer;
+extern unsigned short int pointsPlayer;
 
 extern short int posExtraPoint;
 

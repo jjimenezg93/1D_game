@@ -2,6 +2,9 @@
 ** Author: Julian Jimenez Gonzalez (jjimenezg93)
 */
 
+#pragma warning(disable: 4514)
+#pragma warning(disable: 4710)
+
 #include <cstdlib>
 
 #include "Metheorology.h"
