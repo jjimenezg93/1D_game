@@ -9,12 +9,13 @@
 
 #include <conio.h>
 #include <cstdio>
+#include <list>
 #include <Windows.h>
 
 #include "defs.h"
-#include "Renderer.h"
 #include "GameLogic.h"
 #include "HighScores.h"
+#include "Renderer.h"
 
 char flagApp = '\0';
 char flagGame;
@@ -35,6 +36,9 @@ short int posExtraPoint = -1;
 unsigned char rainFrames[3] = { '`', '-', '.' };
 bool intenseRain = false;		//set to true for fun
 
+std::list<int> listBullets;
+std::list<int>::iterator itrListBullets;
+
 void initVars() {
 	flagGame = '\0';
 
@@ -52,7 +56,7 @@ void initVars() {
 
 int main() {
 	unsigned short int key = 0;
-	
+
 	while (!flagApp) {
 		Renderer::renderMainMenu();
 
@@ -80,10 +84,12 @@ int main() {
 							GameLogic::updatePlayerPosition(1, -1);
 						else if (key == MOVERIGHT && posPlayer < WORLDSIZE - 1)
 							GameLogic::updatePlayerPosition(1, 1);
-						else if (key == SHOOTLEFT && posLBullet <= -(1 + COLLISIONTHRESHOLD) && !(posRBullet <= WORLDSIZE))
-							GameLogic::setBulletPosition(&posLBullet, posPlayer - 1);
-						else if (key == SHOOTRIGHT && posRBullet >= WORLDSIZE + 2 && !(posLBullet >= 0))
-							GameLogic::setBulletPosition(&posRBullet, posPlayer + 1);
+						else if (key == SHOOTLEFT)
+							//GameLogic::setBulletPosition(&posLBullet, posPlayer - 1);
+							GameLogic::spawnBullet(posPlayer - 1);
+						else if (key == SHOOTRIGHT)
+							//GameLogic::setBulletPosition(&posRBullet, posPlayer + 1);
+							GameLogic::spawnBullet(posPlayer + 1);
 						else if (key == ESC) {
 							flagGame = '1';
 							break;
@@ -95,16 +101,12 @@ int main() {
 					GameLogic::randomSpawnExtraPoint();
 
 					//enemy - bullets collisions
-					if (GameLogic::isCollision(posEnemy, posLBullet)) {
-						GameLogic::addPoints(5);
-						GameLogic::setBulletPosition(&posLBullet, -(1 + COLLISIONTHRESHOLD + 1));
-						GameLogic::setEnemyPosition(-1);
-					}
-
-					if (GameLogic::isCollision(posEnemy, posRBullet)) {
-						GameLogic::addPoints(5);
-						GameLogic::setBulletPosition(&posRBullet, WORLDSIZE + 1);
-						GameLogic::setEnemyPosition(-1);
+					for (itrListBullets = listBullets.begin(); itrListBullets != listBullets.end(); itrListBullets++) {
+						if (GameLogic::isCollision((*itrListBullets), posEnemy)) {
+							pointsPlayer += 5;
+							GameLogic::removeBullet(*itrListBullets);
+							break;
+						}
 					}
 
 					//enemy & bullets position update
@@ -137,6 +139,7 @@ int main() {
 			}
 		}
 	}
+
 	HighScores::freeNames();		//this deallocates memory stored for names
 
 	Renderer::cleanScreen();

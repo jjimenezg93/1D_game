@@ -16,4 +16,4 @@ Download `1D_game.exe` and check it out! in your Win32 console!
 **Esc** - Exit
 
 ###Version
-Project is currently at **v0.4**
+Project is currently at **v0.4.1**

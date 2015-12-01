@@ -6,7 +6,6 @@
 #pragma warning(disable: 4548)
 #pragma warning(disable: 4710)
 
-//#include <cstdio>
 #include <map>
 
 #include "HighScores.h"
@@ -15,13 +14,14 @@
 static std::map<unsigned short int, char *> m_scores;
 
 void insertScore(const unsigned short int newScore);
-bool checkScoreIsHighScore(const unsigned short int score);
+bool checkScoreIsHighScore(const unsigned short int score);		//returns if score must be added or not
 void deletePair(unsigned short int scoreToFree);
 
 namespace HighScores {
 	int getNewScore(const unsigned short int newScore) {
 		if (m_scores.size() < HIGHSCORESIZE) {
 			insertScore(newScore);
+
 			return 0;
 		} else if (checkScoreIsHighScore(newScore)) {
 			insertScore(newScore);

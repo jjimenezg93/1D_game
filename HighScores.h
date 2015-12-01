@@ -10,11 +10,7 @@ namespace HighScores {
 
 	void printHighScores();		//calls Renderer::renderScore
 
-	//bool checkScoreIsHighScore(const unsigned short int score);		//returns if score must be added or not
-
 	void freeNames();
-
-	//void deletePair(unsigned short int score);
 }
 
 #endif // !_HIGHSCORES_H

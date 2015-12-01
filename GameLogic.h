@@ -12,7 +12,9 @@ namespace GameLogic {
 
 	void setEnemyPosition(const short int newPosition);
 
-	void setBulletPosition(short int * const ptrBullet, const short int newPosition);
+	void spawnBullet(const short int posBullet);
+
+	void removeBullet(const short int posBullet);
 
 	void setExtraPointPosition(const short int newPosition);
 

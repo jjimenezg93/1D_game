@@ -2,6 +2,8 @@
 ** Author: Julian Jimenez Gonzalez (jjimenezg93)
 */
 
+#include <list>
+
 #ifndef _DEFS_H
 #define _DEFS_H
 
@@ -36,5 +38,8 @@ extern short int posExtraPoint;
 extern unsigned char rainFrames[3];
 
 extern bool intenseRain;
+
+extern std::list<int> listBullets;
+extern std::list<int>::iterator itrListBullets;
 
 #endif	// !_DEFS_H

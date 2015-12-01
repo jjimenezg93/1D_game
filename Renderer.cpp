@@ -8,14 +8,14 @@
 #pragma warning(disable: 4710)
 #pragma warning(disable: 4820)
 
-#include <cstdio>
 #include <cstdlib>
+#include <cstdio>
 #include <Windows.h>
 
 #include "defs.h"
-#include "Renderer.h"
-#include "Metheorology.h"
 #include "HighScores.h"
+#include "Metheorology.h"
+#include "Renderer.h"
 
 namespace Renderer {
 	void setMapPosition() {
@@ -35,21 +35,32 @@ namespace Renderer {
 	}
 
 	void renderWorld() {
+		itrListBullets = listBullets.begin();
+		bool posIsBullet;
 		for (unsigned short int i = 0; i < WORLDSIZE - 1; i++) {
-			if (i == posLBullet)
-				printf("<");
-			else if (i == posRBullet)
-				printf(">");
-			else if (i == posPlayer)
+			posIsBullet = false;
+
+			for (itrListBullets = listBullets.begin(); itrListBullets != listBullets.end(); itrListBullets++) {
+				if (i == *itrListBullets) {
+					if (*itrListBullets < posPlayer)
+						printf("<");
+					else if (*itrListBullets > posPlayer)
+						printf(">");
+					posIsBullet = true;
+					break;
+				}
+			}
+
+			if (!posIsBullet && i == posPlayer)
 				printf("X");
-			else if (i == posEnemy)
+			else if (!posIsBullet && i == posEnemy)
 				printf("|");
-			else if (i == posExtraPoint)
-				printf("P");
-			else if (!intenseRain)
+			else if (!posIsBullet && !intenseRain && !(i == posExtraPoint))
 				printf("%c", Metheorology::rainFrame());
-			else
+			else if (!posIsBullet && !(i == posExtraPoint))
 				printf("%c", Metheorology::intenseRainFrame());
+			else if (!posIsBullet && i == posExtraPoint)
+				printf("P");
 		}
 	}
 

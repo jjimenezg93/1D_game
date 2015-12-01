@@ -5,11 +5,11 @@
 #pragma warning(disable: 4514)
 #pragma warning(disable: 4710)
 
-#include <cstdio>
 #include <cstdlib>
+#include <cstdio>
 
-#include "GameLogic.h"
 #include "defs.h"
+#include "GameLogic.h"
 
 namespace GameLogic {
 	void randomSpawnEnemy() {
@@ -32,9 +32,14 @@ namespace GameLogic {
 	void setEnemyPosition(const short int newPosition) {
 		posEnemy = newPosition;
 	}
-	
-	void setBulletPosition(short int * const ptrBullet, const short int newPosition) {
-		*ptrBullet = newPosition;
+
+	void spawnBullet(const short int posBullet) {
+		listBullets.push_back(posBullet);
+	}
+
+	void removeBullet(const short int posBullet) {
+		listBullets.remove(posBullet);
+		setEnemyPosition(-1);
 	}
 
 	void setExtraPointPosition(const short int newPosition) {
@@ -51,11 +56,12 @@ namespace GameLogic {
 	}
 
 	void updateBulletsPosition(const unsigned short int offset) {
-		if (posLBullet >= -1)
-			posLBullet -= offset;
-
-		if (posRBullet <= WORLDSIZE + 1)
-			posRBullet += offset;
+		for (itrListBullets = listBullets.begin(); itrListBullets != listBullets.end(); itrListBullets++) {
+			if (*itrListBullets < posPlayer)
+				(*itrListBullets)--;
+			else
+				(*itrListBullets)++;
+		}
 	}
 
 	void addPoints(const unsigned short int points) {

@@ -7,8 +7,8 @@
 
 #include <cstdlib>
 
-#include "Metheorology.h"
 #include "defs.h"
+#include "Metheorology.h"
 
 namespace Metheorology {
 	unsigned char rainFrame() {
