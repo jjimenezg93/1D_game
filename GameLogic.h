@@ -7,21 +7,16 @@
 
 namespace GameLogic {
 	void randomSpawnEnemy();
-
 	void randomSpawnExtraPoint();
 
-	void setEnemyPosition(const short int newPosition);
-
 	void spawnBullet(const short int posBullet);
+	void removeBullet(const int posBullet);
 
-	void removeBullet(const short int posBullet);
-
+	void setEnemyPosition(const short int newPosition);
 	void setExtraPointPosition(const short int newPosition);
 
 	void updatePlayerPosition(const unsigned short int offset, const short int direction);	//direction = -1 left. direction = 1 right
-
 	void updateEnemyPosition(const unsigned short int offset);
-
 	void updateBulletsPosition(const unsigned short int offset);
 
 	void addPoints(const unsigned short int points);

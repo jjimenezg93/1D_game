@@ -9,7 +9,6 @@
 
 #include <conio.h>
 #include <cstdio>
-#include <list>
 #include <Windows.h>
 
 #include "defs.h"
@@ -21,15 +20,11 @@ char flagApp = '\0';
 char flagGame;
 
 unsigned short int posPlayer;
+short int lifesPlayer;
+unsigned short int pointsPlayer;
 
 short int posEnemy;
 short int dirEnemy;
-
-short int posLBullet;		//must avoid having posEnemy = -1 and posLBullet = -2, since it would instantly kill enemy with COLLISIONTHRESHOLD >= 1
-short int posRBullet;
-
-short int lifesPlayer;
-unsigned short int pointsPlayer;
 
 short int posExtraPoint = -1;
 
@@ -43,15 +38,11 @@ void initVars() {
 	flagGame = '\0';
 
 	posPlayer = WORLDSIZE / 2;
+	lifesPlayer = 2;
+	pointsPlayer = 0;
 
 	posEnemy = -1;
 	dirEnemy = -1;
-
-	posLBullet = posEnemy - (COLLISIONTHRESHOLD + 1);		//must avoid having posEnemy = -1 and posLBullet = -2, since it would instantly kill enemy with COLLISIONTHRESHOLD >= 1
-	posRBullet = WORLDSIZE + 2;
-
-	lifesPlayer = 2;
-	pointsPlayer = 0;
 }
 
 int main() {
@@ -85,10 +76,8 @@ int main() {
 						else if (key == MOVERIGHT && posPlayer < WORLDSIZE - 1)
 							GameLogic::updatePlayerPosition(1, 1);
 						else if (key == SHOOTLEFT)
-							//GameLogic::setBulletPosition(&posLBullet, posPlayer - 1);
 							GameLogic::spawnBullet(posPlayer - 1);
 						else if (key == SHOOTRIGHT)
-							//GameLogic::setBulletPosition(&posRBullet, posPlayer + 1);
 							GameLogic::spawnBullet(posPlayer + 1);
 						else if (key == ESC) {
 							flagGame = '1';

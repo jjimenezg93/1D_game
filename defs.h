@@ -2,10 +2,10 @@
 ** Author: Julian Jimenez Gonzalez (jjimenezg93)
 */
 
-#include <list>
-
 #ifndef _DEFS_H
 #define _DEFS_H
+
+#include <list>
 
 #define WORLDSIZE 41
 #define MOVELEFT 65
@@ -23,15 +23,11 @@ extern char flagApp;
 extern char flagGame;
 
 extern unsigned short int posPlayer;
+extern short int lifesPlayer;
+extern unsigned short int pointsPlayer;
 
 extern short int posEnemy;
 extern short int dirEnemy;
-
-extern short int posLBullet;
-extern short int posRBullet;
-
-extern short int lifesPlayer;
-extern unsigned short int pointsPlayer;
 
 extern short int posExtraPoint;
 

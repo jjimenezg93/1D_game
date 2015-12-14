@@ -8,8 +8,8 @@
 
 #include <map>
 
-#include "HighScores.h"
 #include "defs.h"
+#include "HighScores.h"
 
 static std::map<unsigned short int, char *> m_scores;
 
@@ -21,11 +21,9 @@ namespace HighScores {
 	int getNewScore(const unsigned short int newScore) {
 		if (m_scores.size() < HIGHSCORESIZE) {
 			insertScore(newScore);
-
 			return 0;
 		} else if (checkScoreIsHighScore(newScore)) {
 			insertScore(newScore);
-
 			return 0;
 		}
 
@@ -33,7 +31,7 @@ namespace HighScores {
 	}
 
 	void printHighScores() {
-		//reverse iterator to show it in descending order
+		//reverse iterator to show it in descending order -> from higher to lower score
 		for (std::map<unsigned short int, char *>::reverse_iterator reverseIt = m_scores.rbegin(); reverseIt != m_scores.rend(); reverseIt++) {
 			printf("%s : ", reverseIt->second);
 			printf("%d points\n\n", reverseIt->first);
@@ -68,7 +66,6 @@ bool checkScoreIsHighScore(const unsigned short int score) {
 			if (score > it->first)
 				return true;
 		}
-
 		return false;
 	}
 }

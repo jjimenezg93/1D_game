@@ -7,7 +7,6 @@
 
 namespace Metheorology {
 	unsigned char rainFrame();
-
 	unsigned char intenseRainFrame();
 }
 

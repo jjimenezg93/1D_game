@@ -5,15 +5,21 @@ ___
 ###Project description
 This is a very simple game in which all you have to do is shoot to enemies and try to take all extra-points. Get the highest score!
 
-Download `1D_game.exe` and check it out! in your Win32 console!
+Download `[1D_game.exe](1D_game.exe)` and check it out in your Win32 console!
+
+If you prefer, you can also download `[1D_game.wmv](1D_game.wmv)` and watch a gameplay video.
 
 ###Game controls
 
 **A** - Move right
+
 **D** - Move left
+
 **Q** - Shoot left
+
 **E** - Shoot right
+
 **Esc** - Exit
 
 ###Version
-Project is currently at **v0.4.1**
+Project is currently at **v1.0**

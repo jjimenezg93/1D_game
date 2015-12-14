@@ -8,8 +8,8 @@
 #pragma warning(disable: 4710)
 #pragma warning(disable: 4820)
 
-#include <cstdlib>
 #include <cstdio>
+#include <cstdlib>
 #include <Windows.h>
 
 #include "defs.h"
@@ -37,9 +37,9 @@ namespace Renderer {
 	void renderWorld() {
 		itrListBullets = listBullets.begin();
 		bool posIsBullet;
+
 		for (unsigned short int i = 0; i < WORLDSIZE - 1; i++) {
 			posIsBullet = false;
-
 			for (itrListBullets = listBullets.begin(); itrListBullets != listBullets.end(); itrListBullets++) {
 				if (i == *itrListBullets) {
 					if (*itrListBullets < posPlayer)
