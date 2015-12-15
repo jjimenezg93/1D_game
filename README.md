@@ -7,7 +7,7 @@ This is a very simple game in which all you have to do is shoot to enemies and t
 
 Download `1D_game.exe` and check it out in your Win32 console!
 
-If you prefer, you can also download `1D_game.wmv` and watch a gameplay video.
+If you prefer, you can also watch a [Gameplay video] (https://youtu.be/dn6xY_oW6tU)!
 
 ###Game controls
 
