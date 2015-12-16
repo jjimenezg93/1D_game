@@ -22,4 +22,4 @@ If you prefer, you can also download `[1D_game.wmv](1D_game.wmv)` and watch a ga
 **Esc** - Exit
 
 ###Version
-Project is currently at **v1.0**
+Project is currently at **v1.1**

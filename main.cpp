@@ -92,7 +92,7 @@ int main() {
 					//enemy - bullets collisions
 					for (itrListBullets = listBullets.begin(); itrListBullets != listBullets.end(); itrListBullets++) {
 						if (GameLogic::isCollision((*itrListBullets), posEnemy)) {
-							pointsPlayer += 5;
+							GameLogic::addPoints(5);
 							GameLogic::removeBullet(*itrListBullets);
 							break;
 						}

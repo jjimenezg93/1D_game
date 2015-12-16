@@ -62,9 +62,11 @@ bool checkScoreIsHighScore(const unsigned short int score) {
 	if (!(m_scores.size()))
 		return true;
 	else {
-		for (std::map<unsigned short int, char *>::iterator it = m_scores.begin(); it != m_scores.end(); it++) {
+		std::map<unsigned short int, char *>::iterator it = m_scores.begin();
+		while (it != m_scores.end()) {
 			if (score > it->first)
 				return true;
+			it++;
 		}
 		return false;
 	}

@@ -10,6 +10,7 @@ namespace HighScores {
 
 	void printHighScores();
 
+	//deallocates memory of names (char *)
 	void freeNames();
 }
 

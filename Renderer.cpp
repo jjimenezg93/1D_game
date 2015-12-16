@@ -40,7 +40,8 @@ namespace Renderer {
 
 		for (unsigned short int i = 0; i < WORLDSIZE - 1; i++) {
 			posIsBullet = false;
-			for (itrListBullets = listBullets.begin(); itrListBullets != listBullets.end(); itrListBullets++) {
+			itrListBullets = listBullets.begin();
+			while (itrListBullets != listBullets.end()) {
 				if (i == *itrListBullets) {
 					if (*itrListBullets < posPlayer)
 						printf("<");
@@ -49,6 +50,8 @@ namespace Renderer {
 					posIsBullet = true;
 					break;
 				}
+
+				itrListBullets++;
 			}
 
 			if (!posIsBullet && i == posPlayer)
